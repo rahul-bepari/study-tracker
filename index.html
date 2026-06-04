@@ -3,275 +3,227 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StudyLog — CSE Session Tracker</title>
-  <meta name="description" content="Track your study sessions by course. Built for CSE students."/>
+  <title>StudyFlow — Session Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
-    /* ─── Reset & Base ─────────────────────────────────────── */
+    /* ─── Reset & Tokens ─────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
 
     :root {
-      --bg:        #060a12;
-      --bg2:       #0d1526;
-      --surface:   #111c30;
-      --border:    rgba(255,255,255,0.07);
-      --border2:   rgba(255,255,255,0.13);
-      --accent:    #00e5a0;
-      --accent-dim: rgba(0,229,160,0.12);
-      --blue:      #3d8eff;
-      --blue-dim:  rgba(61,142,255,0.12);
-      --warn:      #ff6b6b;
-      --text:      #e8eef8;
-      --sub:       #8a9abf;
-      --muted:     #3f5070;
-      --mono:      'JetBrains Mono', monospace;
-      --display:   'Syne', sans-serif;
-      --body:      'Outfit', sans-serif;
-      --radius:    14px;
-      --radius-sm: 8px;
-      --shadow:    0 8px 40px rgba(0,0,0,0.5);
+      --bg:       #08090d;
+      --bg2:      #0f1117;
+      --surface:  #13161f;
+      --border:   rgba(255,255,255,0.07);
+      --border2:  rgba(255,255,255,0.12);
+      --green:    #00e5a0;
+      --green-dim:#00e5a020;
+      --blue:     #4f8eff;
+      --blue-dim: #4f8eff18;
+      --red:      #ff4757;
+      --red-dim:  #ff475718;
+      --gold:     #f5c542;
+      --text:     #eef0f6;
+      --muted:    #4a5270;
+      --muted2:   #6b7499;
+      --syne:     'Syne', sans-serif;
+      --mono:     'JetBrains Mono', monospace;
+      --r:        14px;
+      --r-sm:     10px;
+      --shadow:   0 8px 40px rgba(0,0,0,0.5);
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: var(--body);
-      font-weight: 400;
+      font-family: var(--syne);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* ─── Background grid ───────────────────────────────────── */
+    /* ─── Background mesh ────────────────────────── */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
-      background-size: 48px 48px;
+      background:
+        radial-gradient(ellipse 70% 55% at 15% 5%,  rgba(79,142,255,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 90%, rgba(0,229,160,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(245,197,66,0.025) 0%, transparent 60%);
       pointer-events: none;
       z-index: 0;
     }
 
-    body::after {
-      content: '';
-      position: fixed;
-      top: -30vh; left: -20vw;
-      width: 70vw; height: 70vh;
-      background: radial-gradient(ellipse, rgba(0,229,160,0.055) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ─── Layout ────────────────────────────────────────────── */
-    .page-wrap {
+    /* ─── Layout ─────────────────────────────────── */
+    .page {
       position: relative;
       z-index: 1;
-      max-width: 860px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 0 20px 80px;
+      padding: 0 20px 100px;
     }
 
-    /* ─── Navbar ─────────────────────────────────────────────── */
+    /* ─── Nav / Header ───────────────────────────── */
     nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 22px 0 28px;
-      border-bottom: 1px solid var(--border);
+      padding: 28px 0 0;
       margin-bottom: 48px;
+      animation: fadeDown 0.5s ease both;
     }
 
-    .nav-logo {
+    .logo {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .logo-icon {
-      width: 34px; height: 34px;
-      background: var(--accent);
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
+      width: 36px; height: 36px;
+      background: var(--green);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
     }
 
     .logo-text {
-      font-family: var(--display);
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-
-    .logo-text span { color: var(--accent); }
-
-    .nav-badge {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      background: var(--blue-dim);
-      color: var(--blue);
-      border: 1px solid rgba(61,142,255,0.25);
-      border-radius: 20px;
-      padding: 4px 12px;
-      letter-spacing: 0.05em;
-    }
-
-    /* ─── Hero ───────────────────────────────────────────────── */
-    .hero {
-      margin-bottom: 48px;
-      animation: fadeUp 0.5s ease both;
-    }
-
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--accent);
-      border: 1px solid rgba(0,229,160,0.25);
-      border-radius: 20px;
-      padding: 5px 14px;
-      margin-bottom: 18px;
-      letter-spacing: 0.08em;
-    }
-
-    .hero-tag::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .hero h1 {
-      font-family: var(--display);
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 800;
-      line-height: 1.1;
       letter-spacing: -0.03em;
       color: var(--text);
-      margin-bottom: 14px;
     }
 
-    .hero h1 em {
-      font-style: normal;
-      color: var(--accent);
+    .logo-text span { color: var(--green); }
+
+    .streak-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--gold);
     }
 
-    .hero p {
-      color: var(--sub);
-      font-size: clamp(0.9rem, 2vw, 1.05rem);
-      font-weight: 300;
-      max-width: 480px;
-      line-height: 1.65;
-    }
-
-    /* ─── Stats Row ──────────────────────────────────────────── */
-    .stats-row {
+    /* ─── Hero stat row ──────────────────────────── */
+    .hero-stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 32px;
-      animation: fadeUp 0.5s 0.1s ease both;
+      gap: 12px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.55s 0.1s ease both;
     }
 
-    .stat-card {
+    .stat-tile {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      transition: border-color 0.2s;
+      border-radius: var(--r);
+      padding: 18px 16px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .stat-card:hover { border-color: var(--border2); }
+    .stat-tile::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .stat-tile.green::before { background: var(--green); }
+    .stat-tile.blue::before  { background: var(--blue); }
+    .stat-tile.gold::before  { background: var(--gold); }
 
     .stat-label {
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-family: var(--mono);
+      font-size: 0.65rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
+      letter-spacing: 0.12em;
+      color: var(--muted2);
       margin-bottom: 8px;
     }
 
     .stat-value {
       font-family: var(--mono);
-      font-size: 1.5rem;
+      font-size: clamp(1.4rem, 3.5vw, 1.9rem);
       font-weight: 600;
-      color: var(--text);
       line-height: 1;
     }
 
-    .stat-value.accent { color: var(--accent); }
-    .stat-value.blue   { color: var(--blue); }
+    .stat-tile.green .stat-value { color: var(--green); }
+    .stat-tile.blue  .stat-value { color: var(--blue); }
+    .stat-tile.gold  .stat-value { color: var(--gold); }
 
     .stat-sub {
-      font-size: 0.72rem;
-      color: var(--muted);
+      font-size: 0.7rem;
+      color: var(--muted2);
       margin-top: 4px;
     }
 
-    /* ─── Main Grid ──────────────────────────────────────────── */
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: start;
-      animation: fadeUp 0.5s 0.2s ease both;
-    }
-
-    /* ─── Card ───────────────────────────────────────────────── */
-    .card {
+    /* ─── Main card ──────────────────────────────── */
+    .main-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px 24px;
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.55s 0.2s ease both;
     }
 
-    .card-title {
-      font-family: var(--display);
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: var(--text);
+    .card-section-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted2);
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .card-title .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
+    .card-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
-    /* ─── Input ──────────────────────────────────────────────── */
-    .field { margin-bottom: 16px; }
+    /* Input group */
+    .input-group {
+      position: relative;
+      margin-bottom: 24px;
+    }
 
-    .field label {
+    .input-group label {
       display: block;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
+      letter-spacing: 0.08em;
+      color: var(--muted2);
       margin-bottom: 8px;
     }
 
-    .input-wrap { position: relative; }
+    .input-wrap {
+      position: relative;
+    }
 
-    .input-wrap svg {
+    .input-icon {
       position: absolute;
-      left: 13px; top: 50%;
+      left: 14px;
+      top: 50%;
       transform: translateY(-50%);
-      opacity: 0.4;
+      font-size: 16px;
       pointer-events: none;
     }
 
@@ -279,175 +231,199 @@
       width: 100%;
       background: var(--bg2);
       border: 1.5px solid var(--border2);
-      border-radius: var(--radius-sm);
+      border-radius: var(--r-sm);
       color: var(--text);
-      font-family: var(--body);
+      font-family: var(--syne);
       font-size: 0.95rem;
-      padding: 11px 14px 11px 40px;
+      font-weight: 600;
+      padding: 13px 14px 13px 42px;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
     }
 
-    input[type="text"]::placeholder { color: var(--muted); }
-
+    input[type="text"]::placeholder { color: var(--muted); font-weight: 400; }
     input[type="text"]:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(61,142,255,0.12);
+      box-shadow: 0 0 0 3px rgba(79,142,255,0.12);
     }
 
     input[type="text"].error {
-      border-color: var(--warn);
-      box-shadow: 0 0 0 3px rgba(255,107,107,0.12);
-      animation: shake 0.3s ease;
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(255,71,87,0.1);
+      animation: shake 0.35s ease;
     }
 
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
-    }
-
-    /* ─── Timer Display ──────────────────────────────────────── */
-    .timer-wrap {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 24px 16px;
+    /* Timer display */
+    .timer-section {
       text-align: center;
-      margin: 16px 0;
+      padding: 28px 0 32px;
       position: relative;
-      overflow: hidden;
     }
 
-    .timer-wrap::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      transform: scaleX(0);
-      transition: transform 0.3s;
+    .timer-ring-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 12px;
     }
 
-    .timer-wrap.running::before { transform: scaleX(1); }
-
-    .timer-wrap.running {
-      border-color: rgba(0,229,160,0.25);
-      box-shadow: 0 0 30px rgba(0,229,160,0.06);
+    .timer-ring {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+      transition: border-color 0.4s;
     }
 
-    #timer-display {
+    .timer-ring.active {
+      border-color: var(--green);
+      box-shadow: 0 0 0 6px var(--green-dim), 0 0 40px var(--green-dim);
+    }
+
+    .timer-hms {
       font-family: var(--mono);
-      font-size: clamp(2rem, 6vw, 2.8rem);
+      font-size: clamp(1.6rem, 4vw, 2rem);
       font-weight: 600;
-      color: var(--sub);
-      letter-spacing: 0.05em;
+      color: var(--text);
+      letter-spacing: 0.04em;
       transition: color 0.3s;
     }
 
-    .timer-wrap.running #timer-display { color: var(--accent); }
+    .timer-ring.active .timer-hms { color: var(--green); }
 
     .timer-status {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 6px;
       font-family: var(--mono);
-      letter-spacing: 0.08em;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted2);
+      margin-top: 4px;
     }
 
-    .timer-wrap.running .timer-status { color: var(--accent); }
-
-    .active-course {
-      display: none;
-      margin-top: 8px;
-      font-size: 0.8rem;
-      color: var(--blue);
-      background: var(--blue-dim);
-      border: 1px solid rgba(61,142,255,0.2);
-      border-radius: 6px;
-      padding: 4px 12px;
+    .pulse-dot {
       display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      margin-right: 5px;
+      vertical-align: middle;
+      animation: pulse 1.2s ease infinite;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
-    .active-course.hidden { display: none !important; }
+    .timer-ring.active ~ .active-course-row .pulse-dot { opacity: 1; }
 
-    /* ─── Buttons ────────────────────────────────────────────── */
-    .btn-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .btn {
-      padding: 12px 10px;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: opacity 0.15s, transform 0.1s, box-shadow 0.2s;
+    .active-course-row {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      min-height: 28px;
+    }
+
+    .active-course-pill {
+      background: var(--blue-dim);
+      border: 1px solid rgba(79,142,255,0.25);
+      color: var(--blue);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Buttons */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border: none;
+      border-radius: var(--r-sm);
+      font-family: var(--syne);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s, box-shadow 0.2s;
+      letter-spacing: 0.02em;
+      -webkit-appearance: none;
     }
 
     .btn:active:not(:disabled) { transform: scale(0.97); }
-
-    .btn:disabled {
-      opacity: 0.28;
-      cursor: not-allowed;
-    }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
 
     .btn-start {
-      background: var(--accent);
-      color: #060a12;
+      background: var(--green);
+      color: #08090d;
       box-shadow: 0 4px 20px rgba(0,229,160,0.25);
     }
 
-    .btn-start:hover:not(:disabled) {
-      box-shadow: 0 4px 28px rgba(0,229,160,0.4);
-    }
+    .btn-start:hover:not(:disabled) { box-shadow: 0 4px 28px rgba(0,229,160,0.4); }
 
     .btn-finish {
-      background: transparent;
-      color: var(--warn);
-      border: 1.5px solid rgba(255,107,107,0.4);
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(255,71,87,0.2);
     }
 
-    .btn-finish:hover:not(:disabled) {
-      background: rgba(255,107,107,0.08);
-    }
+    .btn-finish:hover:not(:disabled) { box-shadow: 0 4px 28px rgba(255,71,87,0.35); }
 
-    /* ─── Session Log ────────────────────────────────────────── */
-    .log-card { grid-column: 1 / -1; }
+    /* ─── Sessions log card ──────────────────────── */
+    .log-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 28px 20px;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.55s 0.3s ease both;
+    }
 
     .log-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
-    .log-header .card-title { margin-bottom: 0; }
+    .log-title {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
 
-    .btn-clear-all {
-      font-family: var(--mono);
-      font-size: 0.68rem;
+    .btn-clear {
       background: transparent;
       border: 1px solid var(--border2);
-      color: var(--muted);
-      border-radius: 6px;
-      padding: 5px 12px;
+      color: var(--muted2);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: var(--mono);
+      font-size: 0.7rem;
       cursor: pointer;
       transition: border-color 0.2s, color 0.2s;
-      letter-spacing: 0.05em;
+      -webkit-appearance: none;
     }
 
-    .btn-clear-all:hover { border-color: var(--warn); color: var(--warn); }
+    .btn-clear:hover { border-color: var(--red); color: var(--red); }
 
+    /* Session items */
     .session-list {
       list-style: none;
       display: flex;
@@ -461,7 +437,7 @@
       gap: 14px;
       background: var(--bg2);
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: var(--r-sm);
       padding: 14px 16px;
       animation: fadeUp 0.3s ease both;
       transition: border-color 0.2s;
@@ -469,369 +445,344 @@
 
     .session-item:hover { border-color: var(--border2); }
 
-    .session-idx {
+    .session-index {
       font-family: var(--mono);
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--muted);
-      min-width: 22px;
+      min-width: 20px;
       text-align: right;
     }
 
     .session-info { flex: 1; min-width: 0; }
 
     .session-course {
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.92rem;
-      color: var(--text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: var(--text);
     }
 
     .session-time {
       font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--muted);
+      font-size: 0.68rem;
+      color: var(--muted2);
       margin-top: 3px;
     }
 
     .session-dur {
       font-family: var(--mono);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--green);
       white-space: nowrap;
-    }
-
-    .progress-bar-wrap {
-      width: 60px;
-      height: 3px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 2px;
+      background: var(--green-dim);
+      border-radius: 6px;
+      padding: 4px 10px;
     }
 
     .empty-state {
       text-align: center;
-      padding: 36px 20px;
-      color: var(--muted);
+      padding: 40px 20px;
+      color: var(--muted2);
     }
 
-    .empty-icon { font-size: 2rem; margin-bottom: 10px; opacity: 0.4; }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .empty-text { font-size: 0.85rem; line-height: 1.6; }
 
-    .empty-state p { font-size: 0.88rem; }
-
-    /* ─── Footer ─────────────────────────────────────────────── */
+    /* ─── Footer ─────────────────────────────────── */
     footer {
       text-align: center;
-      margin-top: 60px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-      font-size: 0.78rem;
+      margin-top: 48px;
       color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      animation: fadeUp 0.55s 0.4s ease both;
     }
 
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
+    footer a { color: var(--muted2); text-decoration: none; }
+    footer a:hover { color: var(--green); }
 
-    /* ─── Animations ─────────────────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
+    /* ─── Animations ─────────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .hero      { animation-delay: 0s; }
-    .stats-row { animation-delay: 0.1s; }
-    .main-grid { animation-delay: 0.2s; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-    /* ─── Responsive ─────────────────────────────────────────── */
-    @media (max-width: 640px) {
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);   opacity: 1; }
+      50%       { transform: scale(1.6); opacity: 0.5; }
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%,60% { transform: translateX(-6px); }
+      40%,80% { transform: translateX(6px); }
+    }
+
+    /* ─── Responsive ─────────────────────────────── */
+    @media (max-width: 520px) {
       nav { margin-bottom: 32px; }
-      .nav-badge { display: none; }
 
-      .stats-row {
+      .hero-stats {
         grid-template-columns: 1fr 1fr;
       }
 
-      .stats-row .stat-card:last-child {
+      .stat-tile:last-child {
         grid-column: 1 / -1;
       }
 
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
+      .main-card, .log-card { padding: 22px 18px; }
 
-      .progress-bar-wrap { display: none; }
+      .timer-ring { width: 140px; height: 140px; }
+      .timer-hms  { font-size: 1.65rem; }
+
+      .btn-grid { grid-template-columns: 1fr; }
+
+      .stat-value { font-size: 1.3rem; }
     }
 
-    @media (max-width: 400px) {
-      .stats-row { grid-template-columns: 1fr; }
-      .stats-row .stat-card:last-child { grid-column: auto; }
+    @media (max-width: 360px) {
+      .hero-stats { grid-template-columns: 1fr; }
+      .stat-tile:last-child { grid-column: auto; }
     }
-
-    /* ─── Pulse animation for running timer ──────────────────── */
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .pulse { animation: pulse 1.5s ease infinite; }
   </style>
 </head>
 <body>
-<div class="page-wrap">
+
+<div class="page">
 
   <!-- Nav -->
   <nav>
-    <div class="nav-logo">
+    <div class="logo">
       <div class="logo-icon">📚</div>
-      <span class="logo-text">Study<em>Log</em></span>
+      <div class="logo-text">Study<span>Flow</span></div>
     </div>
-    <span class="nav-badge">CSE EDITION</span>
+    <div class="streak-badge">
+      🔥 <span id="streak-count">0</span> day streak
+    </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-tag">Session Tracker · v1.0</div>
-    <h1>Study smarter,<br/><em>not harder.</em></h1>
-    <p>Track every study session by course. See your real total time. Stay consistent — one session at a time.</p>
-  </section>
-
-  <!-- Stats Row -->
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-label">Today's Total</div>
-      <div class="stat-value accent" id="stat-total">0h 00m</div>
-      <div class="stat-sub">study time</div>
+  <!-- Stats row -->
+  <div class="hero-stats">
+    <div class="stat-tile green">
+      <div class="stat-label">Today</div>
+      <div class="stat-value" id="stat-today">0h 00m</div>
+      <div class="stat-sub" id="stat-sessions-count">0 sessions</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Sessions Done</div>
-      <div class="stat-value blue" id="stat-count">0</div>
-      <div class="stat-sub">today</div>
+    <div class="stat-tile blue">
+      <div class="stat-label">Sessions</div>
+      <div class="stat-value" id="stat-count">0</div>
+      <div class="stat-sub">completed</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Avg Session</div>
-      <div class="stat-value" id="stat-avg">—</div>
-      <div class="stat-sub">minutes</div>
+    <div class="stat-tile gold">
+      <div class="stat-label">Best Session</div>
+      <div class="stat-value" id="stat-best">—</div>
+      <div class="stat-sub" id="stat-best-course">none yet</div>
     </div>
   </div>
 
-  <!-- Main Grid -->
-  <div class="main-grid">
+  <!-- Main control card -->
+  <div class="main-card">
+    <div class="card-section-label">New Session</div>
 
-    <!-- Tracker Card -->
-    <div class="card">
-      <div class="card-title"><span class="dot"></span> New Session</div>
-
-      <div class="field">
-        <label for="course-input">Course Name</label>
-        <div class="input-wrap">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path d="M12 14l9-5-9-5-9 5 9 5z"/>
-            <path d="M12 14l6.16-3.422A12.083 12.083 0 0121 13c0 4.418-4.03 8-9 8s-9-3.582-9-8c0-.54.054-1.066.157-1.578L12 14z"/>
-          </svg>
-          <input type="text" id="course-input" placeholder="e.g. CSC301 Theory of Computation" autocomplete="off" maxlength="60"/>
-        </div>
-      </div>
-
-      <div class="timer-wrap" id="timer-wrap">
-        <div id="timer-display">00:00:00</div>
-        <div class="timer-status" id="timer-status">IDLE</div>
-        <div class="active-course hidden" id="active-course"></div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-start" id="btn-start">▶ START</button>
-        <button class="btn btn-finish" id="btn-finish" disabled>■ FINISH</button>
+    <div class="input-group">
+      <label for="course-input">Course / Subject</label>
+      <div class="input-wrap">
+        <span class="input-icon">🎯</span>
+        <input type="text" id="course-input"
+          placeholder="e.g. CSC301 Theory of Computation"
+          maxlength="60"
+          autocomplete="off"/>
       </div>
     </div>
 
-    <!-- Quick Tips Card -->
-    <div class="card">
-      <div class="card-title"><span class="dot" style="background:var(--blue)"></span> How to Use</div>
-      <div style="display:flex; flex-direction:column; gap:14px;">
-        <div style="display:flex; gap:12px; align-items:flex-start;">
-          <div style="width:28px;height:28px;border-radius:7px;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.75rem;font-weight:600;flex-shrink:0;">01</div>
-          <div>
-            <div style="font-weight:600;font-size:0.88rem;">Enter course name</div>
-            <div style="font-size:0.78rem;color:var(--sub);margin-top:2px;">Type your subject like CSC413 or Math201</div>
-          </div>
+    <div class="timer-section">
+      <div class="timer-ring-wrap">
+        <div class="timer-ring" id="timer-ring">
+          <div class="timer-hms" id="timer-display">00:00:00</div>
+          <div class="timer-status" id="timer-status">ready</div>
         </div>
-        <div style="display:flex; gap:12px; align-items:flex-start;">
-          <div style="width:28px;height:28px;border-radius:7px;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.75rem;font-weight:600;flex-shrink:0;">02</div>
-          <div>
-            <div style="font-weight:600;font-size:0.88rem;">Click START</div>
-            <div style="font-size:0.78rem;color:var(--sub);margin-top:2px;">Timer begins counting your session</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:12px; align-items:flex-start;">
-          <div style="width:28px;height:28px;border-radius:7px;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.75rem;font-weight:600;flex-shrink:0;">03</div>
-          <div>
-            <div style="font-weight:600;font-size:0.88rem;">Click FINISH when done</div>
-            <div style="font-size:0.78rem;color:var(--sub);margin-top:2px;">Session is saved automatically to your device</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:12px; align-items:flex-start;">
-          <div style="width:28px;height:28px;border-radius:7px;background:var(--blue-dim);color:var(--blue);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.75rem;font-weight:600;flex-shrink:0;">💾</div>
-          <div>
-            <div style="font-weight:600;font-size:0.88rem;">Data stays saved</div>
-            <div style="font-size:0.78rem;color:var(--sub);margin-top:2px;">Uses localStorage — no login, no server needed</div>
-          </div>
-        </div>
+      </div>
+      <div class="active-course-row" id="active-course-row">
+        <span class="pulse-dot" id="pulse-dot"></span>
+        <span class="active-course-pill" id="active-course-pill" style="display:none"></span>
       </div>
     </div>
 
-    <!-- Session Log -->
-    <div class="card log-card">
-      <div class="log-header">
-        <div class="card-title" style="margin:0"><span class="dot" style="background:var(--blue)"></span> Today's Sessions</div>
-        <button class="btn-clear-all" id="btn-clear">🗑 Clear All</button>
-      </div>
-      <ul class="session-list" id="session-list">
-        <li class="empty-state">
-          <div class="empty-icon">📋</div>
-          <p>No sessions yet today.<br/>Start your first one above!</p>
-        </li>
-      </ul>
+    <div class="btn-grid">
+      <button class="btn btn-start" id="btn-start">▶ Start Study</button>
+      <button class="btn btn-finish" id="btn-finish" disabled>■ Finish</button>
     </div>
-
   </div>
 
-  <!-- Footer -->
+  <!-- Session Log -->
+  <div class="log-card">
+    <div class="log-header">
+      <div class="log-title">Today's Sessions</div>
+      <button class="btn-clear" id="btn-clear">🗑 Clear</button>
+    </div>
+    <ul class="session-list" id="session-list"></ul>
+  </div>
+
   <footer>
-    <p>StudyLog &mdash; Built for CSE students &middot; Data stored locally on your device &middot; No account needed</p>
+    Built with ❤️ by <a href="https://github.com/rahul-bepari" target="_blank">rahul-bepari</a>
+    &nbsp;·&nbsp; StudyFlow v1.0
   </footer>
 
 </div>
 
 <script>
-  /* ── Constants ───────────────────────────────────────────── */
-  const STORAGE_KEY = 'studylog_sessions_v2';
-  const TODAY       = new Date().toDateString();
+  /* ─── Constants ──────────────────────────────── */
+  const STORAGE_KEY = 'studyflow_sessions_v2';
+  const TODAY = new Date().toDateString();
 
-  /* ── DOM refs ────────────────────────────────────────────── */
-  const courseInput  = document.getElementById('course-input');
-  const timerWrap    = document.getElementById('timer-wrap');
-  const timerDisplay = document.getElementById('timer-display');
-  const timerStatus  = document.getElementById('timer-status');
-  const activeCourse = document.getElementById('active-course');
-  const btnStart     = document.getElementById('btn-start');
-  const btnFinish    = document.getElementById('btn-finish');
-  const sessionList  = document.getElementById('session-list');
-  const btnClear     = document.getElementById('btn-clear');
-  const statTotal    = document.getElementById('stat-total');
-  const statCount    = document.getElementById('stat-count');
-  const statAvg      = document.getElementById('stat-avg');
+  /* ─── DOM refs ───────────────────────────────── */
+  const courseInput    = document.getElementById('course-input');
+  const timerRing      = document.getElementById('timer-ring');
+  const timerDisplay   = document.getElementById('timer-display');
+  const timerStatus    = document.getElementById('timer-status');
+  const activeRow      = document.getElementById('active-course-row');
+  const activePill     = document.getElementById('active-course-pill');
+  const pulseDot       = document.getElementById('pulse-dot');
+  const btnStart       = document.getElementById('btn-start');
+  const btnFinish      = document.getElementById('btn-finish');
+  const sessionList    = document.getElementById('session-list');
+  const btnClear       = document.getElementById('btn-clear');
+  const statToday      = document.getElementById('stat-today');
+  const statCount      = document.getElementById('stat-count');
+  const statBest       = document.getElementById('stat-best');
+  const statBestCourse = document.getElementById('stat-best-course');
+  const statSessionsCount = document.getElementById('stat-sessions-count');
+  const streakCount    = document.getElementById('streak-count');
 
-  /* ── State ───────────────────────────────────────────────── */
+  /* ─── State ──────────────────────────────────── */
   let timerInterval = null;
   let startTime     = null;
 
-  /* ── Helpers ─────────────────────────────────────────────── */
+  /* ─── Utilities ──────────────────────────────── */
   const pad = n => String(n).padStart(2, '0');
 
   function toHMS(sec) {
     return `${pad(Math.floor(sec/3600))}:${pad(Math.floor((sec%3600)/60))}:${pad(sec%60)}`;
   }
 
-  function toHm(sec) {
-    const h = Math.floor(sec/3600);
-    const m = Math.floor((sec%3600)/60);
+  function toHM(sec) {
+    const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
     return `${h}h ${pad(m)}m`;
   }
 
-  function toDuration(sec) {
-    const h = Math.floor(sec/3600);
-    const m = Math.floor((sec%3600)/60);
-    const s = sec % 60;
-    if (h > 0) return `${h}h ${pad(m)}m`;
+  function toDur(sec) {
+    const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+    if (h > 0) return `${h}h ${pad(m)}m ${pad(s)}s`;
     if (m > 0) return `${m}m ${pad(s)}s`;
     return `${s}s`;
   }
 
-  function toTimeStr(ts) {
-    return new Date(ts).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  function fmtTime(ts) {
+    return new Date(ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
   }
 
-  function esc(s) {
-    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function esc(str) {
+    return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
-  /* ── Storage ─────────────────────────────────────────────── */
-  function getAllSessions() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    } catch { return []; }
+  /* ─── Storage ────────────────────────────────── */
+  function loadAll() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    catch { return []; }
   }
 
-  function getTodaySessions() {
-    return getAllSessions().filter(s => s.date === TODAY);
+  function saveAll(arr) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
   }
 
-  function addSession(session) {
-    const all = getAllSessions();
-    all.push(session);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  function todaySessions() {
+    return loadAll().filter(s => s.date === TODAY);
+  }
+
+  function addSession(s) {
+    const all = loadAll();
+    all.push(s);
+    saveAll(all);
+    updateStreak(all);
   }
 
   function clearToday() {
-    const filtered = getAllSessions().filter(s => s.date !== TODAY);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+    const all = loadAll().filter(s => s.date !== TODAY);
+    saveAll(all);
   }
 
-  /* ── Render ──────────────────────────────────────────────── */
+  /* ─── Streak ─────────────────────────────────── */
+  function updateStreak(all) {
+    const days = [...new Set(all.map(s => s.date))].sort();
+    if (!days.length) { streakCount.textContent = '0'; return; }
+
+    let streak = 0;
+    let d = new Date();
+    d.setHours(0,0,0,0);
+
+    while (true) {
+      const ds = d.toDateString();
+      if (days.includes(ds)) { streak++; d.setDate(d.getDate()-1); }
+      else break;
+    }
+    streakCount.textContent = streak;
+  }
+
+  /* ─── Render ─────────────────────────────────── */
   function render() {
-    const sessions = getTodaySessions();
+    const sessions = todaySessions();
     const totalSec = sessions.reduce((a, s) => a + s.duration, 0);
     const count    = sessions.length;
-    const avgMin   = count ? Math.round(totalSec / count / 60) : 0;
-    const maxDur   = count ? Math.max(...sessions.map(s => s.duration)) : 1;
+    const best     = sessions.reduce((a, s) => s.duration > (a?.duration||0) ? s : a, null);
 
-    statTotal.textContent = toHm(totalSec);
-    statCount.textContent = count;
-    statAvg.textContent   = count ? `${avgMin} min` : '—';
+    statToday.textContent        = toHM(totalSec);
+    statCount.textContent        = count;
+    statSessionsCount.textContent = `${count} session${count !== 1 ? 's' : ''}`;
+    statBest.textContent         = best ? toDur(best.duration) : '—';
+    statBestCourse.textContent   = best ? best.course : 'none yet';
 
-    if (count === 0) {
+    // Streak from all-time data
+    updateStreak(loadAll());
+
+    if (!sessions.length) {
       sessionList.innerHTML = `
-        <li class="empty-state">
-          <div class="empty-icon">📋</div>
-          <p>No sessions yet today.<br/>Start your first one above!</p>
-        </li>`;
+        <div class="empty-state">
+          <div class="empty-icon">🎓</div>
+          <div class="empty-text">No sessions yet today.<br>Enter a course and hit Start!</div>
+        </div>`;
       return;
     }
 
-    sessionList.innerHTML = [...sessions].reverse().map((s, i) => {
-      const pct = Math.max(8, Math.round((s.duration / maxDur) * 100));
-      return `
-        <li class="session-item">
-          <div class="session-idx">${pad(count - i)}</div>
-          <div class="session-info">
-            <div class="session-course">${esc(s.course)}</div>
-            <div class="session-time">${toTimeStr(s.startTs)} → ${toTimeStr(s.endTs)}</div>
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" style="width:${pct}%"></div>
-          </div>
-          <div class="session-dur">${toDuration(s.duration)}</div>
-        </li>`;
-    }).join('');
+    sessionList.innerHTML = '';
+    [...sessions].reverse().forEach((s, i) => {
+      const li = document.createElement('li');
+      li.className = 'session-item';
+      li.innerHTML = `
+        <div class="session-index">#${sessions.length - i}</div>
+        <div class="session-info">
+          <div class="session-course">${esc(s.course)}</div>
+          <div class="session-time">${fmtTime(s.startTs)} → ${fmtTime(s.endTs)}</div>
+        </div>
+        <div class="session-dur">${toDur(s.duration)}</div>`;
+      sessionList.appendChild(li);
+    });
   }
 
-  /* ── Timer ───────────────────────────────────────────────── */
+  /* ─── Timer ──────────────────────────────────── */
   function tick() {
     const elapsed = Math.floor((Date.now() - startTime) / 1000);
     timerDisplay.textContent = toHMS(elapsed);
   }
 
-  /* ── Events ──────────────────────────────────────────────── */
+  /* ─── Events ─────────────────────────────────── */
   btnStart.addEventListener('click', () => {
     const course = courseInput.value.trim();
     if (!course) {
@@ -844,16 +795,15 @@
     startTime = Date.now();
     timerInterval = setInterval(tick, 500);
 
-    timerWrap.classList.add('running');
-    timerStatus.textContent = '● RECORDING';
-    timerStatus.classList.add('pulse');
+    timerRing.classList.add('active');
+    timerStatus.textContent = 'studying';
+    activePill.textContent  = course;
+    activePill.style.display = '';
+    pulseDot.style.opacity   = '1';
 
-    activeCourse.textContent = course;
-    activeCourse.classList.remove('hidden');
-
-    btnStart.disabled     = true;
-    btnFinish.disabled    = false;
-    courseInput.disabled  = true;
+    btnStart.disabled        = true;
+    btnFinish.disabled       = false;
+    courseInput.disabled     = true;
   });
 
   btnFinish.addEventListener('click', () => {
@@ -865,34 +815,29 @@
 
     addSession({
       course:   courseInput.value.trim(),
-      startTs:  startTime,
+      startTs,
       endTs,
       duration,
-      date:     TODAY
+      date: TODAY
     });
 
-    render();
-
     // Reset UI
-    timerWrap.classList.remove('running');
     timerDisplay.textContent = '00:00:00';
-    timerStatus.textContent  = 'IDLE';
-    timerStatus.classList.remove('pulse');
-    activeCourse.classList.add('hidden');
-    activeCourse.textContent = '';
+    timerRing.classList.remove('active');
+    timerStatus.textContent  = 'ready';
+    activePill.style.display = 'none';
+    pulseDot.style.opacity   = '0';
+    btnStart.disabled        = false;
+    btnFinish.disabled       = true;
+    courseInput.disabled     = false;
+    courseInput.value        = '';
+    startTime                = null;
 
-    btnStart.disabled    = false;
-    btnFinish.disabled   = true;
-    courseInput.disabled = false;
-    courseInput.value    = '';
-    courseInput.focus();
-
-    startTime = null;
+    render();
   });
 
   btnClear.addEventListener('click', () => {
-    if (!getTodaySessions().length) return;
-    if (confirm("Clear all of today's sessions? This can't be undone.")) {
+    if (confirm('Clear all of today\'s sessions?')) {
       clearToday();
       render();
     }
@@ -902,7 +847,7 @@
     if (e.key === 'Enter' && !btnStart.disabled) btnStart.click();
   });
 
-  /* ── Init ────────────────────────────────────────────────── */
+  /* ─── Init ───────────────────────────────────── */
   render();
 </script>
 </body>
