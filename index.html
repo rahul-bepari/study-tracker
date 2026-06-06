@@ -4,726 +4,562 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="theme-color" content="#08090d" id="meta-theme"/>
-  <title>StudyFlow — Session Tracker</title>
+  <title>StudyFlow — Session Tracker + Leaderboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
-    /* ══════════════════════════════════════════
-       TOKENS — Dark Theme (default)
-    ══════════════════════════════════════════ */
-    :root,
-    [data-theme="dark"] {
-      --bg:          #08090d;
-      --bg2:         #0f1117;
-      --surface:     #13161f;
-      --surface2:    #1a1e2b;
-      --border:      rgba(255,255,255,0.07);
-      --border2:     rgba(255,255,255,0.13);
-      --green:       #00e5a0;
-      --green-dim:   rgba(0,229,160,0.12);
-      --blue:        #4f8eff;
-      --blue-dim:    rgba(79,142,255,0.12);
-      --red:         #ff4757;
-      --red-dim:     rgba(255,71,87,0.12);
-      --gold:        #f5c542;
-      --gold-dim:    rgba(245,197,66,0.12);
-      --text:        #eef0f6;
-      --text2:       #9ba3c0;
-      --muted:       #3e4563;
-      --muted2:      #606889;
-      --shadow:      0 8px 40px rgba(0,0,0,0.55);
-      --shadow-sm:   0 2px 12px rgba(0,0,0,0.35);
-      --mesh1:       rgba(79,142,255,0.06);
-      --mesh2:       rgba(0,229,160,0.06);
-      --toggle-bg:   #1a1e2b;
-      --toggle-icon: "☀️";
-      --input-bg:    #0a0b10;
+    /* ══ TOKENS ══════════════════════════════════ */
+    :root, [data-theme="dark"] {
+      --bg:         #08090d;
+      --bg2:        #0f1117;
+      --surface:    #13161f;
+      --surface2:   #1a1e2b;
+      --border:     rgba(255,255,255,0.07);
+      --border2:    rgba(255,255,255,0.13);
+      --green:      #00e5a0;
+      --green-dim:  rgba(0,229,160,0.12);
+      --blue:       #4f8eff;
+      --blue-dim:   rgba(79,142,255,0.12);
+      --red:        #ff4757;
+      --red-dim:    rgba(255,71,87,0.12);
+      --gold:       #f5c542;
+      --gold-dim:   rgba(245,197,66,0.12);
+      --purple:     #a78bfa;
+      --purple-dim: rgba(167,139,250,0.12);
+      --text:       #eef0f6;
+      --text2:      #9ba3c0;
+      --muted:      #3e4563;
+      --muted2:     #606889;
+      --shadow:     0 8px 40px rgba(0,0,0,0.55);
+      --shadow-sm:  0 2px 12px rgba(0,0,0,0.35);
+      --mesh1:      rgba(79,142,255,0.06);
+      --mesh2:      rgba(0,229,160,0.06);
+      --input-bg:   #0a0b10;
+      --toggle-bg:  #1a1e2b;
     }
-
-    /* ══════════════════════════════════════════
-       TOKENS — Light Theme
-    ══════════════════════════════════════════ */
     [data-theme="light"] {
-      --bg:          #f0f4ff;
-      --bg2:         #e8edf8;
-      --surface:     #ffffff;
-      --surface2:    #f5f7fe;
-      --border:      rgba(0,0,0,0.07);
-      --border2:     rgba(0,0,0,0.13);
-      --green:       #00b87a;
-      --green-dim:   rgba(0,184,122,0.10);
-      --blue:        #2e6fe8;
-      --blue-dim:    rgba(46,111,232,0.10);
-      --red:         #e8333f;
-      --red-dim:     rgba(232,51,63,0.10);
-      --gold:        #c99b00;
-      --gold-dim:    rgba(201,155,0,0.10);
-      --text:        #111827;
-      --text2:       #4b5470;
-      --muted:       #b0b8d4;
-      --muted2:      #7b84a0;
-      --shadow:      0 8px 40px rgba(60,80,180,0.10);
-      --shadow-sm:   0 2px 12px rgba(60,80,180,0.07);
-      --mesh1:       rgba(46,111,232,0.07);
-      --mesh2:       rgba(0,184,122,0.07);
-      --toggle-bg:   #e2e8f8;
-      --toggle-icon: "🌙";
-      --input-bg:    #f5f7fe;
+      --bg:         #f0f4ff;
+      --bg2:        #e8edf8;
+      --surface:    #ffffff;
+      --surface2:   #f5f7fe;
+      --border:     rgba(0,0,0,0.07);
+      --border2:    rgba(0,0,0,0.13);
+      --green:      #00b87a;
+      --green-dim:  rgba(0,184,122,0.10);
+      --blue:       #2e6fe8;
+      --blue-dim:   rgba(46,111,232,0.10);
+      --red:        #e8333f;
+      --red-dim:    rgba(232,51,63,0.10);
+      --gold:       #c99b00;
+      --gold-dim:   rgba(201,155,0,0.10);
+      --purple:     #7c3aed;
+      --purple-dim: rgba(124,58,237,0.10);
+      --text:       #111827;
+      --text2:      #4b5470;
+      --muted:      #b0b8d4;
+      --muted2:     #7b84a0;
+      --shadow:     0 8px 40px rgba(60,80,180,0.10);
+      --shadow-sm:  0 2px 12px rgba(60,80,180,0.07);
+      --mesh1:      rgba(46,111,232,0.07);
+      --mesh2:      rgba(0,184,122,0.07);
+      --input-bg:   #f5f7fe;
+      --toggle-bg:  #e2e8f8;
     }
 
-    /* ══════════════════════════════════════════
-       RESET
-    ══════════════════════════════════════════ */
-    *, *::before, *::after {
-      box-sizing: border-box; margin: 0; padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
-
+    /* ══ RESET ═══════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg); color: var(--text);
       font-family: 'Syne', sans-serif;
-      min-height: 100vh;
-      min-height: 100dvh;
-      overflow-x: hidden;
+      min-height: 100dvh; overflow-x: hidden;
       transition: background 0.3s, color 0.3s;
     }
-
-    /* mesh background */
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
         radial-gradient(ellipse 70% 55% at 10% 5%,  var(--mesh1) 0%, transparent 65%),
         radial-gradient(ellipse 60% 50% at 90% 95%, var(--mesh2) 0%, transparent 65%);
-      pointer-events: none;
-      z-index: 0;
       transition: background 0.3s;
     }
 
-    /* ══════════════════════════════════════════
-       LAYOUT
-    ══════════════════════════════════════════ */
+    /* ══ LAYOUT ══════════════════════════════════ */
     .page {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 clamp(14px, 4vw, 28px) clamp(60px, 10vh, 100px);
+      position: relative; z-index: 1;
+      max-width: 720px; margin: 0 auto;
+      padding: 0 clamp(14px,4vw,28px) clamp(60px,10vh,100px);
     }
 
-    /* ══════════════════════════════════════════
-       NAV
-    ══════════════════════════════════════════ */
+    /* ══ TABS ════════════════════════════════════ */
+    .tab-bar {
+      display: flex; gap: 4px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 5px;
+      margin-bottom: clamp(20px,4vw,32px);
+      animation: fadeUp 0.5s 0.15s ease both;
+    }
+    .tab-btn {
+      flex: 1; padding: clamp(9px,2vw,12px) 10px;
+      background: transparent; border: none;
+      border-radius: 10px; cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(0.8rem,2.3vw,0.92rem);
+      font-weight: 700; color: var(--muted2);
+      transition: background 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      display: flex; align-items: center;
+      justify-content: center; gap: 6px;
+    }
+    .tab-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+    }
+    .tab-btn:hover:not(.active) { color: var(--text2); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ══ NAV ════════════════════════════════════ */
     nav {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: space-between;
-      padding-top: clamp(20px, 4vw, 32px);
-      margin-bottom: clamp(24px, 5vw, 44px);
-      animation: fadeDown 0.5s ease both;
-      gap: 10px;
+      padding-top: clamp(20px,4vw,32px);
+      margin-bottom: clamp(20px,4vw,36px);
+      animation: fadeDown 0.5s ease both; gap: 10px;
     }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
+    .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .logo-icon {
-      width: clamp(30px,7vw,38px);
-      height: clamp(30px,7vw,38px);
-      background: var(--green);
-      border-radius: 9px;
-      display: grid;
-      place-items: center;
-      font-size: clamp(14px, 3.5vw, 18px);
-      flex-shrink: 0;
+      width: clamp(30px,7vw,38px); height: clamp(30px,7vw,38px);
+      background: var(--green); border-radius: 9px;
+      display: grid; place-items: center;
+      font-size: clamp(14px,3.5vw,18px); flex-shrink: 0;
       transition: background 0.3s;
     }
-
     .logo-text {
-      font-size: clamp(1rem, 3.5vw, 1.2rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      transition: color 0.3s;
+      font-size: clamp(1rem,3.5vw,1.2rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      color: var(--text); transition: color 0.3s;
     }
-
     .logo-text span { color: var(--green); transition: color 0.3s; }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
+    .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .streak-badge {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 999px;
-      padding: 5px clamp(8px,2.5vw,14px);
+      display: flex; align-items: center; gap: 5px;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 999px; padding: 5px clamp(8px,2.5vw,14px);
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.65rem, 2vw, 0.75rem);
-      color: var(--gold);
-      transition: background 0.3s, border-color 0.3s, color 0.3s;
-      white-space: nowrap;
+      font-size: clamp(0.65rem,2vw,0.75rem); color: var(--gold);
+      transition: background 0.3s, border-color 0.3s; white-space: nowrap;
     }
-
-    /* Theme toggle */
     .theme-toggle {
-      width: clamp(34px,8vw,40px);
-      height: clamp(34px,8vw,40px);
-      background: var(--toggle-bg);
-      border: 1px solid var(--border2);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      font-size: clamp(14px,3.5vw,17px);
-      transition: background 0.3s, border-color 0.3s, transform 0.15s;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      flex-shrink: 0;
+      width: clamp(34px,8vw,40px); height: clamp(34px,8vw,40px);
+      background: var(--toggle-bg); border: 1px solid var(--border2);
+      border-radius: 50%; display: grid; place-items: center;
+      cursor: pointer; font-size: clamp(14px,3.5vw,17px);
+      transition: background 0.3s, transform 0.15s;
+      user-select: none; -webkit-tap-highlight-color: transparent; flex-shrink: 0;
     }
-
     .theme-toggle:hover  { transform: scale(1.08); }
     .theme-toggle:active { transform: scale(0.93); }
 
-    /* ══════════════════════════════════════════
-       HERO STATS
-    ══════════════════════════════════════════ */
+    /* ══ STAT TILES ══════════════════════════════ */
     .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: clamp(8px, 2vw, 14px);
-      margin-bottom: clamp(16px, 3vw, 24px);
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: clamp(8px,2vw,14px);
+      margin-bottom: clamp(14px,3vw,22px);
       animation: fadeUp 0.55s 0.1s ease both;
     }
-
     .stat-tile {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: clamp(10px, 2.5vw, 16px);
-      padding: clamp(14px, 3vw, 20px) clamp(12px, 2.5vw, 18px);
-      position: relative;
-      overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: clamp(10px,2.5vw,16px);
+      padding: clamp(14px,3vw,20px) clamp(12px,2.5vw,18px);
+      position: relative; overflow: hidden;
       transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
     }
-
     .stat-tile:hover { box-shadow: var(--shadow-sm); }
-
     .stat-tile::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2.5px;
-      border-radius: 2px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2.5px; border-radius: 2px;
     }
-
     .stat-tile.green::before { background: var(--green); }
     .stat-tile.blue::before  { background: var(--blue); }
     .stat-tile.gold::before  { background: var(--gold); }
-
     .stat-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.58rem, 1.8vw, 0.68rem);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted2);
-      margin-bottom: 6px;
-      transition: color 0.3s;
+      font-size: clamp(0.58rem,1.8vw,0.68rem);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted2); margin-bottom: 6px; transition: color 0.3s;
     }
-
     .stat-value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(1.1rem, 3.5vw, 1.85rem);
-      font-weight: 600;
-      line-height: 1;
-      transition: color 0.3s;
+      font-size: clamp(1.1rem,3.5vw,1.85rem);
+      font-weight: 600; line-height: 1; transition: color 0.3s;
     }
-
     .stat-tile.green .stat-value { color: var(--green); }
     .stat-tile.blue  .stat-value { color: var(--blue); }
     .stat-tile.gold  .stat-value { color: var(--gold); }
-
     .stat-sub {
-      font-size: clamp(0.62rem, 1.8vw, 0.72rem);
-      color: var(--muted2);
-      margin-top: 4px;
-      transition: color 0.3s;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: clamp(0.62rem,1.8vw,0.72rem); color: var(--muted2);
+      margin-top: 4px; transition: color 0.3s;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* ══════════════════════════════════════════
-       CARDS
-    ══════════════════════════════════════════ */
+    /* ══ CARD ════════════════════════════════════ */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: clamp(14px, 3vw, 22px);
-      padding: clamp(20px, 5vw, 34px) clamp(18px, 5vw, 32px);
-      margin-bottom: clamp(14px, 3vw, 22px);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: clamp(14px,3vw,22px);
+      padding: clamp(20px,5vw,34px) clamp(18px,5vw,32px);
+      margin-bottom: clamp(14px,3vw,22px);
       box-shadow: var(--shadow);
       transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
     }
-
     .section-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.63rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted2);
-      margin-bottom: clamp(16px, 3vw, 22px);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: color 0.3s;
+      font-size: 0.63rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--muted2);
+      margin-bottom: clamp(16px,3vw,22px);
+      display: flex; align-items: center; gap: 10px; transition: color 0.3s;
     }
-
     .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-      transition: background 0.3s;
+      content: ''; flex: 1; height: 1px;
+      background: var(--border); transition: background 0.3s;
     }
 
-    /* ══════════════════════════════════════════
-       INPUT
-    ══════════════════════════════════════════ */
-    .input-group { margin-bottom: clamp(18px, 4vw, 26px); }
-
+    /* ══ INPUT ═══════════════════════════════════ */
+    .input-group { margin-bottom: clamp(14px,3vw,20px); }
     .input-group label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted2);
-      margin-bottom: 8px;
-      transition: color 0.3s;
+      display: block; font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted2); margin-bottom: 7px; transition: color 0.3s;
     }
-
     .input-wrap { position: relative; }
-
     .input-icon {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 15px;
-      pointer-events: none;
-      line-height: 1;
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%); font-size: 15px;
+      pointer-events: none; line-height: 1;
     }
-
-    input[type="text"] {
-      width: 100%;
-      background: var(--input-bg);
-      border: 1.5px solid var(--border2);
-      border-radius: 10px;
-      color: var(--text);
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(0.88rem, 2.5vw, 1rem);
-      font-weight: 600;
-      padding: clamp(11px,2.5vw,14px) 14px clamp(11px,2.5vw,14px) 40px;
+    input[type="text"], input[type="number"] {
+      width: 100%; background: var(--input-bg);
+      border: 1.5px solid var(--border2); border-radius: 10px;
+      color: var(--text); font-family: 'Syne', sans-serif;
+      font-size: clamp(0.88rem,2.5vw,1rem); font-weight: 600;
+      padding: clamp(11px,2.5vw,13px) 14px clamp(11px,2.5vw,13px) 40px;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
-      -webkit-appearance: none;
-      appearance: none;
+      -webkit-appearance: none; appearance: none;
     }
-
-    input[type="text"]::placeholder { color: var(--muted2); font-weight: 400; }
-
-    input[type="text"]:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px var(--blue-dim);
+    input[type="text"]::placeholder,
+    input[type="number"]::placeholder { color: var(--muted2); font-weight: 400; }
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-dim);
     }
-
-    input[type="text"].error {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px var(--red-dim);
+    input.error {
+      border-color: var(--red) !important;
+      box-shadow: 0 0 0 3px var(--red-dim) !important;
       animation: shake 0.35s ease;
     }
 
-    /* ══════════════════════════════════════════
-       TIMER
-    ══════════════════════════════════════════ */
+    /* ══ TIMER ═══════════════════════════════════ */
     .timer-section {
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       align-items: center;
-      padding: clamp(16px, 4vw, 28px) 0 clamp(20px, 4vw, 30px);
+      padding: clamp(16px,4vw,24px) 0 clamp(18px,4vw,26px);
     }
-
     .timer-ring {
-      width: clamp(130px, 35vw, 168px);
-      height: clamp(130px, 35vw, 168px);
-      border-radius: 50%;
-      background: var(--bg2);
+      width: clamp(130px,35vw,160px); height: clamp(130px,35vw,160px);
+      border-radius: 50%; background: var(--bg2);
       border: 2px solid var(--border2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-direction: column;
       transition: border-color 0.4s, box-shadow 0.4s, background 0.3s;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
-
     .timer-ring.active {
       border-color: var(--green);
       box-shadow: 0 0 0 7px var(--green-dim), 0 0 44px var(--green-dim);
     }
-
     .timer-hms {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(1.4rem, 5vw, 2rem);
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: 0.04em;
-      transition: color 0.3s;
+      font-size: clamp(1.3rem,4.5vw,1.9rem);
+      font-weight: 600; color: var(--text);
+      letter-spacing: 0.04em; transition: color 0.3s;
     }
-
     .timer-ring.active .timer-hms { color: var(--green); }
-
     .timer-status {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.55rem, 1.8vw, 0.62rem);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted2);
-      margin-top: 5px;
-      transition: color 0.3s;
+      font-size: clamp(0.55rem,1.8vw,0.62rem);
+      text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--muted2); margin-top: 5px; transition: color 0.3s;
     }
-
     .active-course-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      min-height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 7px; min-height: 28px;
     }
-
     .pulse-dot {
-      width: 7px; height: 7px;
-      background: var(--green);
-      border-radius: 50%;
-      opacity: 0;
-      animation: pulse 1.3s ease infinite;
-      transition: opacity 0.3s, background 0.3s;
-      flex-shrink: 0;
+      width: 7px; height: 7px; background: var(--green); border-radius: 50%;
+      opacity: 0; animation: pulse 1.3s ease infinite;
+      transition: opacity 0.3s; flex-shrink: 0;
     }
-
     .active-course-pill {
-      background: var(--blue-dim);
-      border: 1px solid rgba(79,142,255,0.2);
-      color: var(--blue);
-      border-radius: 999px;
+      background: var(--blue-dim); border: 1px solid rgba(79,142,255,0.2);
+      color: var(--blue); border-radius: 999px;
       padding: 4px clamp(10px,3vw,16px);
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.7rem, 2vw, 0.8rem);
-      font-weight: 600;
-      max-width: min(260px, 72vw);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: background 0.3s, border-color 0.3s, color 0.3s;
+      font-size: clamp(0.68rem,2vw,0.78rem); font-weight: 600;
+      max-width: min(260px,72vw); overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap;
+      transition: background 0.3s, color 0.3s;
     }
 
-    /* ══════════════════════════════════════════
-       BUTTONS
-    ══════════════════════════════════════════ */
+    /* ══ BUTTONS ══════════════════════════════════ */
     .btn-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(8px, 2vw, 14px);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(8px,2vw,12px);
     }
-
     .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      padding: clamp(12px,3vw,15px) 16px;
-      border: none;
-      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 7px; padding: clamp(12px,3vw,14px) 16px;
+      border: none; border-radius: 10px;
       font-family: 'Syne', sans-serif;
-      font-size: clamp(0.82rem, 2.3vw, 0.93rem);
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.02em;
+      font-size: clamp(0.82rem,2.3vw,0.92rem); font-weight: 700;
+      cursor: pointer; letter-spacing: 0.02em;
       transition: opacity 0.15s, transform 0.1s, box-shadow 0.2s;
-      -webkit-appearance: none;
-      appearance: none;
-      -webkit-tap-highlight-color: transparent;
+      -webkit-appearance: none; -webkit-tap-highlight-color: transparent;
     }
-
     .btn:active:not(:disabled) { transform: scale(0.96); }
-
-    .btn:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    .btn-start {
-      background: var(--green);
-      color: #08090d;
-      box-shadow: 0 4px 18px var(--green-dim);
-    }
-
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+    .btn-start  { background: var(--green); color: #08090d; box-shadow: 0 4px 18px var(--green-dim); }
+    .btn-finish { background: var(--red);   color: #fff;    box-shadow: 0 4px 18px var(--red-dim); }
+    .btn-submit { background: var(--purple); color: #fff;   box-shadow: 0 4px 18px var(--purple-dim); width: 100%; margin-top: 4px; }
     [data-theme="light"] .btn-start { color: #fff; }
 
-    .btn-start:hover:not(:disabled) {
-      box-shadow: 0 4px 28px rgba(0,229,160,0.35);
-    }
-
-    [data-theme="light"] .btn-start:hover:not(:disabled) {
-      box-shadow: 0 4px 28px rgba(0,184,122,0.3);
-    }
-
-    .btn-finish {
-      background: var(--red);
-      color: #fff;
-      box-shadow: 0 4px 18px var(--red-dim);
-    }
-
-    .btn-finish:hover:not(:disabled) {
-      box-shadow: 0 4px 28px rgba(255,71,87,0.35);
-    }
-
-    /* ══════════════════════════════════════════
-       SESSION LOG
-    ══════════════════════════════════════════ */
+    /* ══ SESSION LOG ═════════════════════════════ */
     .log-header {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: space-between;
-      margin-bottom: clamp(14px, 3vw, 20px);
-      gap: 10px;
+      margin-bottom: clamp(14px,3vw,20px); gap: 10px;
     }
-
     .log-title {
-      font-size: clamp(0.95rem, 2.8vw, 1.05rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      transition: color 0.3s;
+      font-size: clamp(0.95rem,2.8vw,1.05rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      color: var(--text); transition: color 0.3s;
     }
-
     .btn-clear {
-      background: transparent;
-      border: 1px solid var(--border2);
-      color: var(--muted2);
-      border-radius: 8px;
+      background: transparent; border: 1px solid var(--border2);
+      color: var(--muted2); border-radius: 8px;
       padding: 6px clamp(8px,2vw,14px);
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.65rem, 1.8vw, 0.72rem);
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s, background 0.3s;
-      white-space: nowrap;
-      -webkit-appearance: none;
+      font-size: clamp(0.65rem,1.8vw,0.72rem); cursor: pointer;
+      transition: border-color 0.2s, color 0.2s; white-space: nowrap;
       -webkit-tap-highlight-color: transparent;
     }
-
     .btn-clear:hover { border-color: var(--red); color: var(--red); }
-
-    .session-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(7px, 1.8vw, 10px);
-    }
-
+    .session-list { list-style: none; display: flex; flex-direction: column; gap: clamp(7px,1.8vw,10px); }
     .session-item {
-      display: flex;
-      align-items: center;
-      gap: clamp(10px, 2.5vw, 16px);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: clamp(8px, 2vw, 12px);
+      display: flex; align-items: center;
+      gap: clamp(10px,2.5vw,16px);
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: clamp(8px,2vw,12px);
       padding: clamp(11px,2.5vw,14px) clamp(12px,3vw,18px);
       animation: fadeUp 0.3s ease both;
       transition: border-color 0.2s, background 0.3s;
     }
-
     .session-item:hover { border-color: var(--border2); }
-
     .session-index {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.62rem, 1.8vw, 0.72rem);
-      color: var(--muted2);
-      min-width: 18px;
-      text-align: right;
-      transition: color 0.3s;
+      font-size: clamp(0.62rem,1.8vw,0.72rem);
+      color: var(--muted2); min-width: 18px; text-align: right; transition: color 0.3s;
     }
-
     .session-info { flex: 1; min-width: 0; }
-
     .session-course {
-      font-weight: 700;
-      font-size: clamp(0.82rem, 2.4vw, 0.94rem);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--text);
-      transition: color 0.3s;
+      font-weight: 700; font-size: clamp(0.82rem,2.4vw,0.94rem);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text); transition: color 0.3s;
     }
-
     .session-time {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.6rem, 1.7vw, 0.69rem);
-      color: var(--muted2);
-      margin-top: 3px;
-      transition: color 0.3s;
+      font-size: clamp(0.6rem,1.7vw,0.69rem);
+      color: var(--muted2); margin-top: 3px; transition: color 0.3s;
     }
-
     .session-dur {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.72rem, 2vw, 0.82rem);
-      font-weight: 600;
-      color: var(--green);
-      white-space: nowrap;
-      background: var(--green-dim);
-      border-radius: 7px;
-      padding: 4px clamp(7px,2vw,11px);
-      transition: color 0.3s, background 0.3s;
+      font-size: clamp(0.72rem,2vw,0.82rem); font-weight: 600;
+      color: var(--green); white-space: nowrap;
+      background: var(--green-dim); border-radius: 7px;
+      padding: 4px clamp(7px,2vw,11px); transition: color 0.3s, background 0.3s;
     }
+    .empty-state { text-align: center; padding: clamp(28px,6vw,44px) 20px; color: var(--muted2); }
+    .empty-icon  { font-size: clamp(2rem,6vw,2.8rem); margin-bottom: 10px; }
+    .empty-text  { font-size: clamp(0.8rem,2.2vw,0.87rem); line-height: 1.7; }
 
-    .empty-state {
-      text-align: center;
-      padding: clamp(28px,6vw,44px) 20px;
-      color: var(--muted2);
-      transition: color 0.3s;
+    /* ══ LEADERBOARD ══════════════════════════════ */
+    .lb-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: clamp(16px,3vw,22px); gap: 10px; flex-wrap: wrap;
     }
-
-    .empty-icon { font-size: clamp(2rem, 6vw, 2.8rem); margin-bottom: 10px; }
-
-    .empty-text {
-      font-size: clamp(0.8rem, 2.2vw, 0.87rem);
-      line-height: 1.7;
+    .lb-title {
+      font-size: clamp(1rem,3vw,1.15rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--text); transition: color 0.3s;
     }
-
-    /* ══════════════════════════════════════════
-       FOOTER
-    ══════════════════════════════════════════ */
-    footer {
-      text-align: center;
-      margin-top: clamp(32px, 6vw, 52px);
-      color: var(--muted2);
+    .lb-refresh {
+      background: transparent; border: 1px solid var(--border2);
+      color: var(--muted2); border-radius: 8px;
+      padding: 6px clamp(8px,2vw,14px);
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.62rem, 1.8vw, 0.7rem);
-      animation: fadeUp 0.55s 0.4s ease both;
-      transition: color 0.3s;
+      font-size: clamp(0.65rem,1.8vw,0.72rem); cursor: pointer;
+      transition: border-color 0.2s, color 0.2s; white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lb-refresh:hover { border-color: var(--blue); color: var(--blue); }
+    .lb-refresh.spinning { animation: spin 0.7s linear; }
+
+    /* submit form */
+    .lb-form-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(8px,2vw,12px); margin-bottom: clamp(14px,3vw,20px);
     }
 
-    footer a {
-      color: var(--muted2);
-      text-decoration: none;
-      transition: color 0.2s;
+    /* rank list */
+    .rank-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+    .rank-item {
+      display: flex; align-items: center;
+      gap: clamp(10px,2.5vw,14px);
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: clamp(8px,2vw,12px);
+      padding: clamp(10px,2.5vw,13px) clamp(12px,3vw,18px);
+      animation: fadeUp 0.3s ease both;
+      transition: border-color 0.2s, background 0.3s;
+      position: relative; overflow: hidden;
     }
 
+    .rank-item.me {
+      border-color: var(--purple);
+      background: var(--purple-dim);
+    }
+
+    /* medal colors */
+    .rank-item.rank-1 { border-color: var(--gold); }
+    .rank-item.rank-2 { border-color: #a0aec0; }
+    .rank-item.rank-3 { border-color: #cd7f32; }
+
+    .rank-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.78rem,2.2vw,0.9rem); font-weight: 600;
+      min-width: clamp(26px,6vw,34px); text-align: center;
+    }
+
+    .rank-item.rank-1 .rank-num { color: var(--gold);   font-size: clamp(1rem,2.8vw,1.2rem); }
+    .rank-item.rank-2 .rank-num { color: #a0aec0; }
+    .rank-item.rank-3 .rank-num { color: #cd7f32; }
+
+    .rank-info { flex: 1; min-width: 0; }
+    .rank-name {
+      font-weight: 700; font-size: clamp(0.84rem,2.4vw,0.96rem);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text); transition: color 0.3s;
+    }
+    .rank-item.me .rank-name::after {
+      content: ' (you)';
+      color: var(--purple); font-size: 0.75em; font-weight: 600;
+    }
+    .rank-updated {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.58rem,1.6vw,0.66rem);
+      color: var(--muted2); margin-top: 2px; transition: color 0.3s;
+    }
+
+    .rank-hours {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.8rem,2.2vw,0.95rem); font-weight: 600;
+      white-space: nowrap; text-align: right;
+    }
+    .rank-item.rank-1 .rank-hours { color: var(--gold); }
+    .rank-item.me     .rank-hours { color: var(--purple); }
+
+    /* progress bar behind each row */
+    .rank-bar {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      background: var(--green-dim); z-index: 0;
+      transition: width 0.6s ease, background 0.3s;
+      border-radius: inherit;
+    }
+    .rank-item.rank-1 .rank-bar { background: var(--gold-dim); }
+    .rank-item.me     .rank-bar { background: var(--purple-dim); }
+    .rank-item > *:not(.rank-bar) { position: relative; z-index: 1; }
+
+    /* loading / status */
+    .lb-status {
+      text-align: center; padding: clamp(24px,5vw,36px) 20px;
+      color: var(--muted2); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem; transition: color 0.3s;
+    }
+    .lb-status.error { color: var(--red); }
+    .spinner {
+      display: inline-block; width: 22px; height: 22px;
+      border: 2px solid var(--border2); border-top-color: var(--blue);
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+      margin-bottom: 8px;
+    }
+
+    /* my rank banner */
+    .my-rank-banner {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--purple-dim); border: 1px solid rgba(167,139,250,0.25);
+      border-radius: 10px; padding: 12px 16px;
+      margin-bottom: clamp(14px,3vw,20px);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.75rem,2vw,0.85rem);
+      color: var(--purple); transition: all 0.3s;
+    }
+    .my-rank-banner .rank-big {
+      font-size: clamp(1.3rem,4vw,1.6rem); font-weight: 600; color: var(--purple);
+    }
+
+    /* ══ FOOTER ══════════════════════════════════ */
+    footer {
+      text-align: center; margin-top: clamp(32px,6vw,52px);
+      color: var(--muted2); font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.62rem,1.8vw,0.7rem);
+      animation: fadeUp 0.55s 0.4s ease both; transition: color 0.3s;
+    }
+    footer a { color: var(--muted2); text-decoration: none; transition: color 0.2s; }
     footer a:hover { color: var(--green); }
 
-    /* ══════════════════════════════════════════
-       ANIMATIONS
-    ══════════════════════════════════════════ */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-12px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ══ ANIMATIONS ══════════════════════════════ */
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(14px)}  to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse    { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.7);opacity:0.4} }
+    @keyframes shake    { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+    @keyframes spin     { to{transform:rotate(360deg)} }
+
+    /* ══ RESPONSIVE ══════════════════════════════ */
+    @media (max-width:600px) {
+      .hero-stats { grid-template-columns:1fr 1fr; }
+      .stat-tile:last-child { grid-column:1/-1; }
+      .lb-form-row { grid-template-columns:1fr; }
     }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @media (max-width:420px) {
+      .btn-grid { grid-template-columns:1fr; }
+      .streak-badge { display:none; }
     }
-
-    @keyframes pulse {
-      0%,100% { transform: scale(1);   opacity: 1; }
-      50%      { transform: scale(1.7); opacity: 0.4; }
+    @media (max-width:340px) {
+      .hero-stats { grid-template-columns:1fr; }
+      .stat-tile:last-child { grid-column:auto; }
     }
-
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      20%,60% { transform: translateX(-6px); }
-      40%,80% { transform: translateX(6px); }
-    }
-
-    /* ══════════════════════════════════════════
-       RESPONSIVE BREAKPOINTS
-    ══════════════════════════════════════════ */
-
-    /* Tablet portrait & smaller (≤600px) */
-    @media (max-width: 600px) {
-      .hero-stats {
-        grid-template-columns: 1fr 1fr;
-      }
-      .stat-tile:last-child {
-        grid-column: 1 / -1;
-      }
-      .stat-tile:last-child .stat-value {
-        font-size: 1.3rem;
-      }
-    }
-
-    /* Phone (≤420px) */
-    @media (max-width: 420px) {
-      .hero-stats {
-        grid-template-columns: 1fr 1fr;
-      }
-      .btn-grid {
-        grid-template-columns: 1fr;
-      }
-      .streak-badge {
-        display: none; /* hide on very small to keep nav clean */
-      }
-    }
-
-    /* Very small phones (≤340px) */
-    @media (max-width: 340px) {
-      .hero-stats {
-        grid-template-columns: 1fr;
-      }
-      .stat-tile:last-child {
-        grid-column: auto;
-      }
-    }
-
-    /* Large screens / tablets landscape */
-    @media (min-width: 768px) {
-      .btn-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    /* Safe area (notch phones) */
-    @supports (padding: env(safe-area-inset-bottom)) {
-      body {
-        padding-bottom: env(safe-area-inset-bottom);
-      }
+    @supports (padding:env(safe-area-inset-bottom)) {
+      body { padding-bottom:env(safe-area-inset-bottom); }
     }
   </style>
 </head>
 <body>
-
 <div class="page">
 
-  <!-- ── Nav ── -->
+  <!-- NAV -->
   <nav>
     <div class="logo">
       <div class="logo-icon">📚</div>
@@ -731,14 +567,14 @@
     </div>
     <div class="nav-right">
       <div class="streak-badge">🔥 <span id="streak-count">0</span> day streak</div>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
         <span id="theme-icon">☀️</span>
       </button>
     </div>
   </nav>
 
-  <!-- ── Stats ── -->
-  <div class="hero-stats" role="region" aria-label="Today's statistics">
+  <!-- STATS -->
+  <div class="hero-stats">
     <div class="stat-tile green">
       <div class="stat-label">Today</div>
       <div class="stat-value" id="stat-today">0h 00m</div>
@@ -756,311 +592,432 @@
     </div>
   </div>
 
-  <!-- ── Main Control Card ── -->
-  <div class="card" style="animation: fadeUp 0.55s 0.2s ease both;">
-    <div class="section-label">New Session</div>
-
-    <div class="input-group">
-      <label for="course-input">Course / Subject</label>
-      <div class="input-wrap">
-        <span class="input-icon">🎯</span>
-        <input type="text" id="course-input"
-          placeholder="e.g. CSC301 Theory of Computation"
-          maxlength="60"
-          autocomplete="off"
-          autocorrect="off"
-          spellcheck="false"/>
-      </div>
-    </div>
-
-    <div class="timer-section">
-      <div class="timer-ring" id="timer-ring">
-        <div class="timer-hms" id="timer-display">00:00:00</div>
-        <div class="timer-status" id="timer-status">ready</div>
-      </div>
-      <div class="active-course-row">
-        <span class="pulse-dot" id="pulse-dot"></span>
-        <span class="active-course-pill" id="active-course-pill" style="display:none"></span>
-      </div>
-    </div>
-
-    <div class="btn-grid">
-      <button class="btn btn-start" id="btn-start">▶ Start Study</button>
-      <button class="btn btn-finish" id="btn-finish" disabled>■ Finish</button>
-    </div>
+  <!-- TABS -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="tracker">⏱ Tracker</button>
+    <button class="tab-btn" data-tab="leaderboard">🏆 Leaderboard</button>
   </div>
 
-  <!-- ── Session Log ── -->
-  <div class="card" style="animation: fadeUp 0.55s 0.3s ease both;">
-    <div class="log-header">
-      <div class="log-title">Today's Sessions</div>
-      <button class="btn-clear" id="btn-clear">🗑 Clear all</button>
+  <!-- ══ TAB: TRACKER ══ -->
+  <div class="tab-panel active" id="tab-tracker">
+
+    <!-- Timer card -->
+    <div class="card" style="animation:fadeUp 0.55s 0.2s ease both">
+      <div class="section-label">New Session</div>
+      <div class="input-group">
+        <label for="course-input">Course / Subject</label>
+        <div class="input-wrap">
+          <span class="input-icon">🎯</span>
+          <input type="text" id="course-input"
+            placeholder="e.g. CSC301 Theory of Computation"
+            maxlength="60" autocomplete="off" autocorrect="off" spellcheck="false"/>
+        </div>
+      </div>
+      <div class="timer-section">
+        <div class="timer-ring" id="timer-ring">
+          <div class="timer-hms" id="timer-display">00:00:00</div>
+          <div class="timer-status" id="timer-status">ready</div>
+        </div>
+        <div class="active-course-row">
+          <span class="pulse-dot" id="pulse-dot"></span>
+          <span class="active-course-pill" id="active-course-pill" style="display:none"></span>
+        </div>
+      </div>
+      <div class="btn-grid">
+        <button class="btn btn-start"  id="btn-start">▶ Start Study</button>
+        <button class="btn btn-finish" id="btn-finish" disabled>■ Finish</button>
+      </div>
     </div>
-    <ul class="session-list" id="session-list"></ul>
-  </div>
+
+    <!-- Session log -->
+    <div class="card" style="animation:fadeUp 0.55s 0.3s ease both">
+      <div class="log-header">
+        <div class="log-title">Today's Sessions</div>
+        <button class="btn-clear" id="btn-clear">🗑 Clear all</button>
+      </div>
+      <ul class="session-list" id="session-list"></ul>
+    </div>
+
+  </div><!-- /tab-tracker -->
+
+  <!-- ══ TAB: LEADERBOARD ══ -->
+  <div class="tab-panel" id="tab-leaderboard">
+
+    <!-- Submit your hours -->
+    <div class="card" style="animation:fadeUp 0.4s ease both">
+      <div class="section-label">Submit Your Hours</div>
+
+      <div class="lb-form-row">
+        <div class="input-group" style="margin-bottom:0">
+          <label for="lb-username">Your Username</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" id="lb-username"
+              placeholder="e.g. rahul_bepari"
+              maxlength="30" autocomplete="off" spellcheck="false"/>
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label for="lb-hours">Total Study Hours</label>
+          <div class="input-wrap">
+            <span class="input-icon">⏳</span>
+            <input type="number" id="lb-hours"
+              placeholder="e.g. 30" min="0.1" max="9999" step="0.5"/>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-submit" id="btn-submit">🚀 Submit to Leaderboard</button>
+      <div id="submit-msg" style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;text-align:center;min-height:20px;transition:color 0.3s"></div>
+    </div>
+
+    <!-- My rank banner -->
+    <div class="my-rank-banner" id="my-rank-banner" style="display:none">
+      <div class="rank-big" id="my-rank-num">—</div>
+      <div>
+        <div style="font-weight:700">Your current rank</div>
+        <div style="font-size:0.75rem;opacity:0.8" id="my-rank-detail"></div>
+      </div>
+    </div>
+
+    <!-- Rank list -->
+    <div class="card" style="animation:fadeUp 0.5s 0.1s ease both;padding-bottom:clamp(16px,3vw,24px)">
+      <div class="lb-header">
+        <div class="lb-title">🏆 Top 100 Studiers</div>
+        <button class="lb-refresh" id="lb-refresh">↻ Refresh</button>
+      </div>
+      <div id="lb-content">
+        <div class="lb-status"><div class="spinner"></div><br>Loading leaderboard…</div>
+      </div>
+    </div>
+
+  </div><!-- /tab-leaderboard -->
 
   <footer>
     Built by <a href="https://github.com/rahul-bepari" target="_blank" rel="noopener">rahul-bepari</a>
-    &nbsp;·&nbsp; StudyFlow v2.0 &nbsp;·&nbsp; Data stays on your device
+    &nbsp;·&nbsp; StudyFlow v2.0 &nbsp;·&nbsp; Data stored securely on Supabase
   </footer>
 
-</div>
+</div><!-- /page -->
 
 <script>
-  /* ═══════════════════════════════════════
-     CONSTANTS & STORAGE KEY
-  ═══════════════════════════════════════ */
-  const STORAGE_KEY  = 'studyflow_sessions_v2';
-  const THEME_KEY    = 'studyflow_theme';
-  const TODAY        = new Date().toDateString();
+/* ═══════════════════════════════════════════════════
+   ⚠️  STEP 3: PASTE YOUR SUPABASE CREDENTIALS HERE
+═══════════════════════════════════════════════════ */
+const SUPABASE_URL = 'https://vxrwabplkowfwatifxre.supabase.co';   
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4cndhYnBsa293ZndhdGlmeHJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3MjU3NzcsImV4cCI6MjA5NjMwMTc3N30.RJHYwhRSEfUsNH75pquA2lWh6OU7GKiyTa2jL5Ehx70';                   
 
-  /* ═══════════════════════════════════════
-     DOM REFS
-  ═══════════════════════════════════════ */
-  const html           = document.documentElement;
-  const metaTheme      = document.getElementById('meta-theme');
-  const themeToggle    = document.getElementById('theme-toggle');
-  const themeIcon      = document.getElementById('theme-icon');
-  const courseInput    = document.getElementById('course-input');
-  const timerRing      = document.getElementById('timer-ring');
-  const timerDisplay   = document.getElementById('timer-display');
-  const timerStatus    = document.getElementById('timer-status');
-  const activePill     = document.getElementById('active-course-pill');
-  const pulseDot       = document.getElementById('pulse-dot');
-  const btnStart       = document.getElementById('btn-start');
-  const btnFinish      = document.getElementById('btn-finish');
-  const sessionList    = document.getElementById('session-list');
-  const btnClear       = document.getElementById('btn-clear');
-  const statToday      = document.getElementById('stat-today');
-  const statCount      = document.getElementById('stat-count');
-  const statBest       = document.getElementById('stat-best');
-  const statBestCourse = document.getElementById('stat-best-course');
-  const statSessions   = document.getElementById('stat-sessions-count');
-  const streakCount    = document.getElementById('streak-count');
+/* ═══════════════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════════════ */
+const STORAGE_KEY = 'studyflow_sessions_v2';
+const THEME_KEY   = 'studyflow_theme';
+const LB_USER_KEY = 'studyflow_lb_username';
+const TODAY       = new Date().toDateString();
 
-  /* ═══════════════════════════════════════
-     THEME
-  ═══════════════════════════════════════ */
-  function applyTheme(theme) {
-    html.setAttribute('data-theme', theme);
-    // Update meta theme-color
-    metaTheme.setAttribute('content', theme === 'dark' ? '#08090d' : '#f0f4ff');
-    // Update toggle icon
-    themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-    localStorage.setItem(THEME_KEY, theme);
-  }
+/* ═══════════════════════════════════════════════════
+   DOM
+═══════════════════════════════════════════════════ */
+const html           = document.documentElement;
+const metaTheme      = document.getElementById('meta-theme');
+const themeToggle    = document.getElementById('theme-toggle');
+const themeIcon      = document.getElementById('theme-icon');
+const courseInput    = document.getElementById('course-input');
+const timerRing      = document.getElementById('timer-ring');
+const timerDisplay   = document.getElementById('timer-display');
+const timerStatus    = document.getElementById('timer-status');
+const activePill     = document.getElementById('active-course-pill');
+const pulseDot       = document.getElementById('pulse-dot');
+const btnStart       = document.getElementById('btn-start');
+const btnFinish      = document.getElementById('btn-finish');
+const sessionList    = document.getElementById('session-list');
+const btnClear       = document.getElementById('btn-clear');
+const statToday      = document.getElementById('stat-today');
+const statCount      = document.getElementById('stat-count');
+const statBest       = document.getElementById('stat-best');
+const statBestCourse = document.getElementById('stat-best-course');
+const statSessions   = document.getElementById('stat-sessions-count');
+const streakCount    = document.getElementById('streak-count');
+// leaderboard
+const lbUsernameInput = document.getElementById('lb-username');
+const lbHoursInput    = document.getElementById('lb-hours');
+const btnSubmit       = document.getElementById('btn-submit');
+const submitMsg       = document.getElementById('submit-msg');
+const lbContent       = document.getElementById('lb-content');
+const lbRefresh       = document.getElementById('lb-refresh');
+const myRankBanner    = document.getElementById('my-rank-banner');
+const myRankNum       = document.getElementById('my-rank-num');
+const myRankDetail    = document.getElementById('my-rank-detail');
 
-  // Load saved theme or prefer system
-  (function initTheme() {
-    const saved = localStorage.getItem(THEME_KEY);
-    if (saved) {
-      applyTheme(saved);
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      applyTheme(prefersDark ? 'dark' : 'light');
-    }
-  })();
+/* ═══════════════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════════════ */
+function applyTheme(t) {
+  html.setAttribute('data-theme', t);
+  metaTheme.setAttribute('content', t === 'dark' ? '#08090d' : '#f0f4ff');
+  themeIcon.textContent = t === 'dark' ? '☀️' : '🌙';
+  localStorage.setItem(THEME_KEY, t);
+}
+(function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  applyTheme(saved || (window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'));
+})();
+themeToggle.addEventListener('click', () =>
+  applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
 
-  themeToggle.addEventListener('click', () => {
-    const current = html.getAttribute('data-theme');
-    applyTheme(current === 'dark' ? 'light' : 'dark');
+/* ═══════════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════════ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'leaderboard') loadLeaderboard();
   });
+});
 
-  // Also watch system preference change
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (!localStorage.getItem(THEME_KEY)) {
-      applyTheme(e.matches ? 'dark' : 'light');
-    }
+/* ═══════════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════════ */
+const pad    = n => String(n).padStart(2,'0');
+const toHMS  = s => `${pad(Math.floor(s/3600))}:${pad(Math.floor((s%3600)/60))}:${pad(s%60)}`;
+const toHM   = s => `${Math.floor(s/3600)}h ${pad(Math.floor((s%3600)/60))}m`;
+const toDur  = s => {
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;
+  if(h>0) return `${h}h ${pad(m)}m ${pad(sc)}s`;
+  if(m>0) return `${m}m ${pad(sc)}s`;
+  return `${sc}s`;
+};
+const fmtTime = ts => new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+const esc = str => str.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ═══════════════════════════════════════════════════
+   LOCAL STORAGE (tracker)
+═══════════════════════════════════════════════════ */
+const loadAll      = () => { try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch{return[]} };
+const saveAll      = a  => localStorage.setItem(STORAGE_KEY, JSON.stringify(a));
+const todaySess    = () => loadAll().filter(s=>s.date===TODAY);
+const addSession   = s  => { const a=loadAll(); a.push(s); saveAll(a); };
+const clearToday   = () => saveAll(loadAll().filter(s=>s.date!==TODAY));
+const calcStreak   = all => {
+  const days=[...new Set(all.map(s=>s.date))];
+  let streak=0, d=new Date(); d.setHours(0,0,0,0);
+  while(days.includes(d.toDateString())){streak++;d.setDate(d.getDate()-1);}
+  return streak;
+};
+
+/* ═══════════════════════════════════════════════════
+   RENDER (tracker)
+═══════════════════════════════════════════════════ */
+function render() {
+  const sessions = todaySess();
+  const totalSec = sessions.reduce((a,s)=>a+s.duration,0);
+  const count    = sessions.length;
+  const best     = sessions.reduce((a,s)=>(!a||s.duration>a.duration)?s:a, null);
+
+  statToday.textContent      = toHM(totalSec);
+  statCount.textContent      = count;
+  statSessions.textContent   = `${count} session${count!==1?'s':''}`;
+  statBest.textContent       = best ? toDur(best.duration) : '—';
+  statBestCourse.textContent = best ? best.course : 'none yet';
+  streakCount.textContent    = calcStreak(loadAll());
+
+  if(!sessions.length){
+    sessionList.innerHTML=`<div class="empty-state"><div class="empty-icon">🎓</div><div class="empty-text">No sessions yet today.<br>Enter a course and hit <strong>Start</strong>!</div></div>`;
+    return;
+  }
+  sessionList.innerHTML='';
+  [...sessions].reverse().forEach((s,i)=>{
+    const li=document.createElement('li'); li.className='session-item';
+    li.innerHTML=`<div class="session-index">#${sessions.length-i}</div>
+      <div class="session-info">
+        <div class="session-course">${esc(s.course)}</div>
+        <div class="session-time">${fmtTime(s.startTs)} → ${fmtTime(s.endTs)}</div>
+      </div>
+      <div class="session-dur">${toDur(s.duration)}</div>`;
+    sessionList.appendChild(li);
   });
+}
 
-  /* ═══════════════════════════════════════
-     UTILITIES
-  ═══════════════════════════════════════ */
-  const pad  = n => String(n).padStart(2, '0');
+/* ═══════════════════════════════════════════════════
+   TIMER
+═══════════════════════════════════════════════════ */
+let timerInterval=null, startTime=null;
 
-  function toHMS(sec) {
-    return `${pad(Math.floor(sec/3600))}:${pad(Math.floor((sec%3600)/60))}:${pad(sec%60)}`;
-  }
+btnStart.addEventListener('click',()=>{
+  const course=courseInput.value.trim();
+  if(!course){ courseInput.classList.add('error'); courseInput.focus(); setTimeout(()=>courseInput.classList.remove('error'),900); return; }
+  startTime=Date.now();
+  timerInterval=setInterval(()=>{ timerDisplay.textContent=toHMS(Math.floor((Date.now()-startTime)/1000)); },500);
+  timerRing.classList.add('active');
+  timerStatus.textContent='studying…';
+  activePill.textContent=course; activePill.style.display='';
+  pulseDot.style.opacity='1';
+  btnStart.disabled=true; btnFinish.disabled=false; courseInput.disabled=true;
+});
 
-  function toHM(sec) {
-    const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
-    return `${h}h ${pad(m)}m`;
-  }
-
-  function toDur(sec) {
-    const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
-    if (h > 0) return `${h}h ${pad(m)}m ${pad(s)}s`;
-    if (m > 0) return `${m}m ${pad(s)}s`;
-    return `${s}s`;
-  }
-
-  function fmtTime(ts) {
-    return new Date(ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-  }
-
-  function esc(str) {
-    return str.replace(/[&<>"']/g, c =>
-      ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  /* ═══════════════════════════════════════
-     STORAGE
-  ═══════════════════════════════════════ */
-  function loadAll() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-    catch { return []; }
-  }
-
-  function saveAll(arr) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-  }
-
-  function todaySessions() {
-    return loadAll().filter(s => s.date === TODAY);
-  }
-
-  function addSession(s) {
-    const all = loadAll();
-    all.push(s);
-    saveAll(all);
-  }
-
-  function clearToday() {
-    saveAll(loadAll().filter(s => s.date !== TODAY));
-  }
-
-  /* ═══════════════════════════════════════
-     STREAK
-  ═══════════════════════════════════════ */
-  function calcStreak(all) {
-    const days = [...new Set(all.map(s => s.date))];
-    let streak = 0;
-    let d = new Date();
-    d.setHours(0,0,0,0);
-    while (days.includes(d.toDateString())) {
-      streak++;
-      d.setDate(d.getDate() - 1);
-    }
-    return streak;
-  }
-
-  /* ═══════════════════════════════════════
-     RENDER
-  ═══════════════════════════════════════ */
-  function render() {
-    const sessions = todaySessions();
-    const totalSec = sessions.reduce((a, s) => a + s.duration, 0);
-    const count    = sessions.length;
-    const best     = sessions.reduce((a, s) => (!a || s.duration > a.duration) ? s : a, null);
-    const streak   = calcStreak(loadAll());
-
-    statToday.textContent        = toHM(totalSec);
-    statCount.textContent        = count;
-    statSessions.textContent     = `${count} session${count !== 1 ? 's' : ''}`;
-    statBest.textContent         = best ? toDur(best.duration) : '—';
-    statBestCourse.textContent   = best ? best.course : 'none yet';
-    streakCount.textContent      = streak;
-
-    if (!sessions.length) {
-      sessionList.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">🎓</div>
-          <div class="empty-text">No sessions yet today.<br>Enter a course and hit <strong>Start</strong>!</div>
-        </div>`;
-      return;
-    }
-
-    sessionList.innerHTML = '';
-    [...sessions].reverse().forEach((s, i) => {
-      const li = document.createElement('li');
-      li.className = 'session-item';
-      li.innerHTML = `
-        <div class="session-index">#${sessions.length - i}</div>
-        <div class="session-info">
-          <div class="session-course">${esc(s.course)}</div>
-          <div class="session-time">${fmtTime(s.startTs)} → ${fmtTime(s.endTs)}</div>
-        </div>
-        <div class="session-dur">${toDur(s.duration)}</div>`;
-      sessionList.appendChild(li);
-    });
-  }
-
-  /* ═══════════════════════════════════════
-     TIMER
-  ═══════════════════════════════════════ */
-  let timerInterval = null;
-  let startTime     = null;
-
-  function tick() {
-    timerDisplay.textContent = toHMS(Math.floor((Date.now() - startTime) / 1000));
-  }
-
-  /* ═══════════════════════════════════════
-     EVENTS
-  ═══════════════════════════════════════ */
-  btnStart.addEventListener('click', () => {
-    const course = courseInput.value.trim();
-    if (!course) {
-      courseInput.classList.add('error');
-      courseInput.focus();
-      setTimeout(() => courseInput.classList.remove('error'), 900);
-      return;
-    }
-
-    startTime     = Date.now();
-    timerInterval = setInterval(tick, 500);
-
-    timerRing.classList.add('active');
-    timerStatus.textContent  = 'studying…';
-    activePill.textContent   = course;
-    activePill.style.display = '';
-    pulseDot.style.opacity   = '1';
-
-    btnStart.disabled    = true;
-    btnFinish.disabled   = false;
-    courseInput.disabled = true;
-  });
-
-  btnFinish.addEventListener('click', () => {
-    clearInterval(timerInterval);
-    timerInterval = null;
-
-    const endTs    = Date.now();
-    const duration = Math.max(1, Math.floor((endTs - startTime) / 1000));
-
-    addSession({ course: courseInput.value.trim(), startTs: startTime, endTs, duration, date: TODAY });
-
-    // reset UI
-    timerDisplay.textContent = '00:00:00';
-    timerRing.classList.remove('active');
-    timerStatus.textContent  = 'ready';
-    activePill.style.display = 'none';
-    pulseDot.style.opacity   = '0';
-    btnStart.disabled        = false;
-    btnFinish.disabled       = true;
-    courseInput.disabled     = false;
-    courseInput.value        = '';
-    startTime                = null;
-
-    render();
-  });
-
-  btnClear.addEventListener('click', () => {
-    if (confirm("Clear all of today's study sessions?")) {
-      clearToday();
-      render();
-    }
-  });
-
-  // Enter key to start
-  courseInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !btnStart.disabled) btnStart.click();
-  });
-
-  /* ═══════════════════════════════════════
-     INIT
-  ═══════════════════════════════════════ */
+btnFinish.addEventListener('click',()=>{
+  clearInterval(timerInterval); timerInterval=null;
+  const endTs=Date.now(), duration=Math.max(1,Math.floor((endTs-startTime)/1000));
+  addSession({course:courseInput.value.trim(),startTs:startTime,endTs,duration,date:TODAY});
+  timerDisplay.textContent='00:00:00';
+  timerRing.classList.remove('active'); timerStatus.textContent='ready';
+  activePill.style.display='none'; pulseDot.style.opacity='0';
+  btnStart.disabled=false; btnFinish.disabled=true;
+  courseInput.disabled=false; courseInput.value=''; startTime=null;
   render();
+});
+
+btnClear.addEventListener('click',()=>{
+  if(confirm("Clear all of today's sessions?")){ clearToday(); render(); }
+});
+
+courseInput.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!btnStart.disabled) btnStart.click();
+});
+
+/* ═══════════════════════════════════════════════════
+   SUPABASE HELPERS
+═══════════════════════════════════════════════════ */
+async function sbFetch(path, opts={}) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || '',
+      ...opts.headers
+    },
+    method: opts.method || 'GET',
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  });
+  if(!res.ok) {
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.message || `HTTP ${res.status}`);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+/* ═══════════════════════════════════════════════════
+   LEADERBOARD — LOAD
+═══════════════════════════════════════════════════ */
+async function loadLeaderboard() {
+  lbContent.innerHTML=`<div class="lb-status"><div class="spinner"></div><br>Loading…</div>`;
+  lbRefresh.classList.add('spinning');
+
+  try {
+    const data = await sbFetch(
+      'leaderboard?select=username,total_hours,updated_at&order=total_hours.desc&limit=100'
+    );
+
+    lbRefresh.classList.remove('spinning');
+
+    if(!data || !data.length){
+      lbContent.innerHTML=`<div class="lb-status">No entries yet. Be the first! 🚀</div>`;
+      myRankBanner.style.display='none';
+      return;
+    }
+
+    const myName = localStorage.getItem(LB_USER_KEY)||'';
+    const myIdx  = myName ? data.findIndex(r=>r.username===myName) : -1;
+    const maxHrs = data[0].total_hours;
+
+    // my rank banner
+    if(myIdx !== -1){
+      myRankNum.textContent    = `#${myIdx+1}`;
+      myRankDetail.textContent = `${data[myIdx].total_hours} hrs · out of ${data.length} studiers`;
+      myRankBanner.style.display='flex';
+    } else {
+      myRankBanner.style.display='none';
+    }
+
+    const medals = ['🥇','🥈','🥉'];
+    const ul = document.createElement('ul');
+    ul.className='rank-list';
+
+    data.forEach((row,i)=>{
+      const rank   = i+1;
+      const isMe   = row.username === myName;
+      const pct    = maxHrs > 0 ? (row.total_hours/maxHrs*100).toFixed(1) : 0;
+      const medal  = rank<=3 ? medals[rank-1] : `#${rank}`;
+      const date   = new Date(row.updated_at).toLocaleDateString([],{month:'short',day:'numeric'});
+
+      const li = document.createElement('li');
+      li.className = `rank-item rank-${rank}${isMe?' me':''}`;
+      li.style.animationDelay = `${Math.min(i*0.03,0.5)}s`;
+
+      li.innerHTML=`
+        <div class="rank-bar" style="width:${pct}%"></div>
+        <div class="rank-num">${medal}</div>
+        <div class="rank-info">
+          <div class="rank-name">${esc(row.username)}</div>
+          <div class="rank-updated">Updated ${date}</div>
+        </div>
+        <div class="rank-hours">${Number(row.total_hours).toFixed(1)} hrs</div>`;
+      ul.appendChild(li);
+    });
+
+    lbContent.innerHTML='';
+    lbContent.appendChild(ul);
+
+  } catch(e) {
+    lbRefresh.classList.remove('spinning');
+    lbContent.innerHTML=`<div class="lb-status error">⚠️ Could not load leaderboard.<br><small>${esc(e.message)}</small></div>`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   LEADERBOARD — SUBMIT
+═══════════════════════════════════════════════════ */
+lbRefresh.addEventListener('click', loadLeaderboard);
+
+// Pre-fill saved username
+lbUsernameInput.value = localStorage.getItem(LB_USER_KEY) || '';
+
+btnSubmit.addEventListener('click', async () => {
+  const username = lbUsernameInput.value.trim();
+  const hours    = parseFloat(lbHoursInput.value);
+
+  if(!username){ lbUsernameInput.classList.add('error'); lbUsernameInput.focus(); setTimeout(()=>lbUsernameInput.classList.remove('error'),900); return; }
+  if(!hours || hours<=0){ lbHoursInput.classList.add('error'); lbHoursInput.focus(); setTimeout(()=>lbHoursInput.classList.remove('error'),900); return; }
+
+  btnSubmit.disabled=true;
+  setMsg('Submitting…','var(--muted2)');
+
+  try {
+    // Upsert: insert or update if username already exists
+    await sbFetch('leaderboard', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates',
+      headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+      body: { username, total_hours: hours, updated_at: new Date().toISOString() }
+    });
+
+    localStorage.setItem(LB_USER_KEY, username);
+    setMsg('✅ Submitted! Loading leaderboard…','var(--green)');
+    await loadLeaderboard();
+
+    // Switch to show the board
+    document.querySelector('[data-tab="leaderboard"]').click();
+
+  } catch(e) {
+    setMsg(`⚠️ Error: ${e.message}`,'var(--red)');
+  } finally {
+    btnSubmit.disabled=false;
+  }
+});
+
+function setMsg(txt, color) {
+  submitMsg.textContent = txt;
+  submitMsg.style.color = color;
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+render();
 </script>
 </body>
 </html>
